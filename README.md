@@ -1,98 +1,387 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Notification User Service API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Overview
+This is a user management and authentication API built with NestJS and TypeScript. It utilizes TypeORM for database interaction with a PostgreSQL database and JWT for securing endpoints.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
+- **NestJS**: A progressive Node.js framework for building efficient, reliable and scalable server-side applications.
+- **TypeORM**: An ORM that can run in NodeJS and can be used with TypeScript.
+- **PostgreSQL**: A powerful, open source object-relational database system.
+- **JWT Authentication**: Implements JSON Web Tokens for secure, stateless authentication.
+- **Docker**: Provides a containerized environment for consistent development and deployment.
+- **Class-Validator**: Enables decorator-based validation for request data transfer objects (DTOs).
+- **Terminus**: Integrated health checks for monitoring service status, database connectivity, and resource usage.
 
-## Description
+## Getting Started
+### Installation
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
+**1. Clone the repository**
 ```bash
-$ npm install
+git clone https://github.com/Oluwatise-Ajayi/notification-user-service.git
+cd notification-user-service
 ```
 
-## Compile and run the project
-
+**2. Set up Environment Variables**
+Create a `.env` file in the root directory and populate it using the `.env.example` file as a template.
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
-
+**3. Install Dependencies**
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+**4. Run with Docker (Recommended)**
+This will start the NestJS application and a PostgreSQL database instance.
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker-compose up --build
+```
+The service will be available at `http://localhost:3001`.
+
+**5. Run Locally (Alternative)**
+If you have a local PostgreSQL instance running, you can start the application directly.
+```bash
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### Environment Variables
+All required environment variables must be defined in a `.env` file.
 
-## Resources
+| Variable        | Description                                  | Example                                                      |
+| --------------- | -------------------------------------------- | ------------------------------------------------------------ |
+| `DB_HOST`       | Database host name.                          | `localhost`                                                  |
+| `DB_PORT`       | Port number for the database connection.     | `5432`                                                       |
+| `DB_USERNAME`   | Username for the database user.              | `postgres`                                                   |
+| `DB_PASSWORD`   | Password for the database user.              | `postgres`                                                   |
+| `DB_DATABASE`   | The name of the database.                    | `user_service`                                               |
+| `JWT_SECRET`    | Secret key for signing JWTs (min 32 chars).  | `your-super-secret-jwt-key-change-in-production-min-32-chars`|
+| `NODE_ENV`      | Application environment.                     | `development`                                                |
+| `PORT`          | The port the application will listen on.     | `3001`                                                       |
 
-Check out a few resources that may come in handy when working with NestJS:
+## API Documentation
+### Base URL
+`http://localhost:3001`
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### Endpoints
+---
+#### **Auth Module**
 
-## Support
+#### `POST /auth/register`
+Registers a new user and returns a JWT access token.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+**Request**:
+```json
+{
+  "email": "test@example.com",
+  "password": "password123",
+  "phone": "1234567890",
+  "device_token": "fcm_token_string_here"
+}
+```
 
-## Stay in touch
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "user": {
+            "email": "test@example.com",
+            "phone": "1234567890",
+            "device_token": "fcm_token_string_here",
+            "push_enabled": true,
+            "email_enabled": true,
+            "sms_enabled": false,
+            "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "created_at": "2023-10-27T10:00:00.000Z",
+            "updated_at": "2023-10-27T10:00:00.000Z"
+        },
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    },
+    "message": "User registered successfully"
+}
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+**Errors**:
+- `400 Bad Request`: Invalid payload (e.g., invalid email, password too short).
+- `409 Conflict`: A user with the provided email already exists.
 
-## License
+#### `POST /auth/login`
+Authenticates a user and returns a JWT access token.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**Request**:
+```json
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
+
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "user": {
+            "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "email": "test@example.com",
+            "phone": "1234567890",
+            "device_token": "fcm_token_string_here"
+        },
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+    },
+    "message": "Login successful"
+}
+```
+
+**Errors**:
+- `400 Bad Request`: Invalid payload.
+- `401 Unauthorized`: Invalid credentials (email or password incorrect).
+
+---
+#### **Users Module**
+
+#### `POST /users`
+Creates a new user. Primarily for administrative purposes; standard registration should use `/auth/register`.
+
+**Request**:
+```json
+{
+  "email": "new.user@example.com",
+  "phone": "0987654321",
+  "device_token": "another_fcm_token",
+  "push_enabled": true,
+  "email_enabled": true,
+  "sms_enabled": true
+}
+```
+
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "email": "new.user@example.com",
+        "phone": "0987654321",
+        "device_token": "another_fcm_token",
+        "push_enabled": true,
+        "email_enabled": true,
+        "sms_enabled": true,
+        "id": "b2c3d4e5-f6a7-8901-2345-67890abcdef1",
+        "created_at": "2023-10-27T10:05:00.000Z",
+        "updated_at": "2023-10-27T10:05:00.000Z"
+    },
+    "message": "User created successfully"
+}
+```
+
+**Errors**:
+- `400 Bad Request`: Invalid request body.
+
+#### `GET /users`
+Retrieves a paginated list of all users.
+
+**Request**:
+*Query Parameters*:
+- `page` (optional, number): The page number to retrieve. Default: `1`.
+- `limit` (optional, number): The number of items per page. Default: `10`, Max: `100`.
+
+*Example URL*: `/users?page=1&limit=20`
+
+**Response**:
+```json
+{
+    "success": true,
+    "data": [
+        {
+            "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+            "email": "test@example.com",
+            "phone": "1234567890",
+            "device_token": "fcm_token_string_here",
+            "push_enabled": true,
+            "email_enabled": true,
+            "sms_enabled": false,
+            "created_at": "2023-10-27T10:00:00.000Z",
+            "updated_at": "2023-10-27T10:00:00.000Z"
+        }
+    ],
+    "message": "Users retrieved successfully",
+    "meta": {
+        "total": 1,
+        "limit": 10,
+        "page": 1,
+        "total_pages": 1,
+        "has_next": false,
+        "has_previous": false
+    }
+}
+```
+
+**Errors**:
+- `400 Bad Request`: Invalid query parameters.
+
+#### `GET /users/:id`
+Retrieves a single user by their ID.
+
+**Request**:
+*Path Parameter*:
+- `id` (string, UUID): The unique identifier of the user.
+
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "email": "test@example.com",
+        "phone": "1234567890",
+        "device_token": "fcm_token_string_here",
+        "push_enabled": true,
+        "email_enabled": true,
+        "sms_enabled": false,
+        "created_at": "2023-10-27T10:00:00.000Z",
+        "updated_at": "2023-10-27T10:00:00.000Z"
+    },
+    "message": "User retrieved successfully"
+}
+```
+
+**Errors**:
+- `404 Not Found`: User with the specified ID does not exist.
+
+#### `PUT /users/:id`
+Updates a user's details by their ID.
+
+**Request**:
+*Path Parameter*:
+- `id` (string, UUID): The unique identifier of the user.
+*Body*:
+```json
+{
+  "phone": "1112223333",
+  "push_enabled": false
+}
+```
+
+**Response**:
+```json
+{
+    "success": true,
+    "data": {
+        "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "email": "test@example.com",
+        "phone": "1112223333",
+        "device_token": "fcm_token_string_here",
+        "push_enabled": false,
+        "email_enabled": true,
+        "sms_enabled": false,
+        "created_at": "2023-10-27T10:00:00.000Z",
+        "updated_at": "2023-10-27T10:15:00.000Z"
+    },
+    "message": "User updated successfully"
+}
+```
+
+**Errors**:
+- `400 Bad Request`: Invalid request body.
+- `404 Not Found`: User with the specified ID does not exist.
+
+#### `DELETE /users/:id`
+Deletes a user by their ID.
+
+**Request**:
+*Path Parameter*:
+- `id` (string, UUID): The unique identifier of the user.
+
+**Response**:
+```json
+{
+    "success": true,
+    "message": "User deleted successfully"
+}
+```
+
+**Errors**:
+- `404 Not Found`: User with the specified ID does not exist.
+
+---
+#### **Health Module**
+
+#### `GET /health`
+Performs a comprehensive health check of the service, including database connectivity, memory usage, and disk space.
+
+**Response**:
+```json
+{
+    "status": "ok",
+    "info": {
+        "database": {
+            "status": "up"
+        },
+        "memory_heap": {
+            "status": "up"
+        },
+        "memory_rss": {
+            "status": "up"
+        },
+        "storage": {
+            "status": "up"
+        }
+    },
+    "error": {},
+    "details": {
+      ...
+    }
+}
+```
+
+**Errors**:
+- `503 Service Unavailable`: One or more health checks failed.
+
+#### `GET /health/live`
+A simple liveness probe to confirm the service is running.
+
+**Response**:
+```json
+{
+    "status": "ok",
+    "info": {
+        "liveness": {
+            "status": "up"
+        }
+    },
+    "error": {},
+    "details": {
+        "liveness": {
+            "status": "up"
+        }
+    }
+}
+```
+
+**Errors**:
+- `503 Service Unavailable`: The service is not responding.
+
+#### `GET /health/ready`
+A readiness probe to confirm the service is ready to accept traffic (e.g., the database is connected).
+
+**Response**:
+```json
+{
+    "status": "ok",
+    "info": {
+        "database": {
+            "status": "up"
+        }
+    },
+    "error": {},
+    "details": {
+        "database": {
+            "status": "up"
+        }
+    }
+}
+```
+
+**Errors**:
+- `503 Service Unavailable`: A critical dependency (like the database) is not available.
