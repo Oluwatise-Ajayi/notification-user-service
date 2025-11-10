@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { ResponseInterceptor } from './common/interceptors/response.interceptors';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,9 +15,14 @@ async function bootstrap() {
     }),
   );
 
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   app.enableCors();
 
-  await app.listen(3001);
-  console.log('User Service running on port 3001');
+  const port = process.env.PORT || 3001;
+  await app.listen(port);
+  console.log(`User Service running on port ${port}`);
+  console.log(`Health check: http://localhost:${port}/health`);
 }
 bootstrap();
