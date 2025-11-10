@@ -1,26 +1,19 @@
-import { IsEmail, IsString, IsOptional, IsBoolean } from 'class-validator';
+import { IsEmail, IsString, IsOptional, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { UserPreferenceDto } from './user-preference.dto';
 
 export class CreateUserDto {
+  @IsString()
+  name: string;
+
   @IsEmail()
   email: string;
 
   @IsOptional()
   @IsString()
-  phone?: string;
+  push_token?: string;
 
-  @IsOptional()
-  @IsString()
-  device_token?: string;
-
-  @IsOptional()
-  @IsBoolean()
-  push_enabled?: boolean;
-
-  @IsOptional()
-  @IsBoolean()
-  email_enabled?: boolean;
-
-  @IsOptional()
-  @IsBoolean()
-  sms_enabled?: boolean;
+  @ValidateNested()
+  @Type(() => UserPreferenceDto)
+  preferences: UserPreferenceDto;
 }

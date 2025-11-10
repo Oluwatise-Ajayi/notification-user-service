@@ -76,7 +76,7 @@ Registers a new user and returns a JWT access token.
   "email": "test@example.com",
   "password": "password123",
   "phone": "1234567890",
-  "device_token": "fcm_token_string_here"
+  "push_token": "fcm_token_string_here"
 }
 ```
 
@@ -88,7 +88,7 @@ Registers a new user and returns a JWT access token.
         "user": {
             "email": "test@example.com",
             "phone": "1234567890",
-            "device_token": "fcm_token_string_here",
+            "push_token": "fcm_token_string_here",
             "push_enabled": true,
             "email_enabled": true,
             "sms_enabled": false,
@@ -126,7 +126,7 @@ Authenticates a user and returns a JWT access token.
             "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
             "email": "test@example.com",
             "phone": "1234567890",
-            "device_token": "fcm_token_string_here"
+            "push_token": "fcm_token_string_here"
         },
         "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
     },
@@ -149,7 +149,7 @@ Creates a new user. Primarily for administrative purposes; standard registration
 {
   "email": "new.user@example.com",
   "phone": "0987654321",
-  "device_token": "another_fcm_token",
+  "push_token": "another_fcm_token",
   "push_enabled": true,
   "email_enabled": true,
   "sms_enabled": true
@@ -163,7 +163,7 @@ Creates a new user. Primarily for administrative purposes; standard registration
     "data": {
         "email": "new.user@example.com",
         "phone": "0987654321",
-        "device_token": "another_fcm_token",
+        "push_token": "another_fcm_token",
         "push_enabled": true,
         "email_enabled": true,
         "sms_enabled": true,
@@ -197,7 +197,7 @@ Retrieves a paginated list of all users.
             "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
             "email": "test@example.com",
             "phone": "1234567890",
-            "device_token": "fcm_token_string_here",
+            "push_token": "fcm_token_string_here",
             "push_enabled": true,
             "email_enabled": true,
             "sms_enabled": false,
@@ -235,7 +235,7 @@ Retrieves a single user by their ID.
         "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
         "email": "test@example.com",
         "phone": "1234567890",
-        "device_token": "fcm_token_string_here",
+        "push_token": "fcm_token_string_here",
         "push_enabled": true,
         "email_enabled": true,
         "sms_enabled": false,
@@ -271,7 +271,7 @@ Updates a user's details by their ID.
         "id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
         "email": "test@example.com",
         "phone": "1112223333",
-        "device_token": "fcm_token_string_here",
+        "push_token": "fcm_token_string_here",
         "push_enabled": false,
         "email_enabled": true,
         "sms_enabled": false,

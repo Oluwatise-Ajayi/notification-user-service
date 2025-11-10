@@ -1,6 +1,17 @@
-import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  MinLength,
+  IsOptional,
+  ValidateNested,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { UserPreferenceDto } from '../../users/dto/user-preference.dto';
 
 export class RegisterDto {
+  @IsString()
+  name: string;
+
   @IsEmail()
   email: string;
 
@@ -10,9 +21,9 @@ export class RegisterDto {
 
   @IsOptional()
   @IsString()
-  phone?: string;
+  push_token?: string;
 
-  @IsOptional()
-  @IsString()
-  device_token?: string;
+  @ValidateNested()
+  @Type(() => UserPreferenceDto)
+  preferences: UserPreferenceDto;
 }

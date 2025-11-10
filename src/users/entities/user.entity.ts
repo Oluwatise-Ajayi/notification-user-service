@@ -7,6 +7,11 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
+export interface UserPreferences {
+  email: boolean;
+  push: boolean;
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -15,24 +20,21 @@ export class User {
   @Column({ unique: true })
   email: string;
 
+  @Column()
+  name: string;
+
   @Column({ select: false })
   @Exclude()
   password: string;
 
-  @Column({ nullable: true })
-  phone?: string;
-
   @Column({ nullable: true, length: 500 })
-  device_token?: string;
+  push_token?: string;
 
-  @Column({ default: true })
-  push_enabled: boolean;
-
-  @Column({ default: true })
-  email_enabled: boolean;
-
-  @Column({ default: false })
-  sms_enabled: boolean;
+  @Column({
+    type: 'jsonb',
+    default: { email: true, push: true },
+  })
+  preferences: UserPreferences;
 
   @CreateDateColumn()
   created_at: Date;
