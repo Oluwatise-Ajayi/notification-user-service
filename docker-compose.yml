@@ -15,7 +15,7 @@ services:
       timeout: 5s
       retries: 5
   user-service:
-    build: ./user-service
+    build: ./
     ports:
       - "3001:3001"
     environment:
