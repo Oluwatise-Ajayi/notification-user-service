@@ -1,19 +1,24 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { ClsService } from 'nestjs-cls';
+
+interface CustomRequest extends Request {
+  correlationId: string;
+}
 
 @Injectable()
 export class CorrelationIdMiddleware implements NestMiddleware {
+  constructor(private readonly clsService: ClsService) {}
+
   use(req: Request, res: Response, next: NextFunction) {
-    // Get correlation ID from header or generate new one
-    const correlationId = req.headers['x-correlation-id'] || uuidv4();
+    const correlationId =
+      (req.headers['x-correlation-id'] as string | undefined) ?? uuidv4();
 
-    // Attach to request
-    req['correlationId'] = correlationId;
-
-    // Add to response header
+    (req as CustomRequest).correlationId = correlationId;
     res.setHeader('x-correlation-id', correlationId);
 
+    this.clsService.set('correlationId', correlationId);
     next();
   }
 }

@@ -9,12 +9,22 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
+import { UserPreferenceDto } from './dto/user-preference.dto';
+import { UserResponseDto } from './dto/user-response.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiParam,
+} from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -26,7 +36,9 @@ export class UsersController {
     return {
       success: true,
       data: user,
+      error: null,
       message: 'User created successfully',
+      meta: null,
     };
   }
 
@@ -62,6 +74,22 @@ export class UsersController {
     return {
       success: true,
       message: 'User deleted successfully',
+    };
+  }
+  @Patch(':id/preferences')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Update user notification preferences' })
+  @ApiParam({ name: 'id', description: 'User ID' })
+  @ApiOkResponse({ type: UserResponseDto })
+  async updatePreferences(
+    @Param('id') id: string,
+    @Body() preferencesDto: UserPreferenceDto,
+  ) {
+    const user = await this.usersService.updatePreferences(id, preferencesDto);
+    return {
+      success: true,
+      data: user,
+      message: 'User preferences updated successfully',
     };
   }
 }

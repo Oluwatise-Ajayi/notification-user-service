@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../users/entities/user.entity';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { LoggingService } from '../common/services/logging.service';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private readonly loggingService: LoggingService,
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -45,6 +47,11 @@ export class AuthService {
 
     // Remove password from response
     const { password, ...userWithoutPassword } = savedUser;
+
+    this.loggingService.logWithCorrelation('user_registered', {
+      user_id: savedUser.id,
+      event: 'registration',
+    });
 
     return {
       user: userWithoutPassword,
@@ -75,6 +82,10 @@ export class AuthService {
 
     const { password, ...userWithoutPassword } = user;
 
+    this.loggingService.logWithCorrelation('user_registered', {
+      user_id: user.id,
+      event: 'login',
+    });
     return {
       user: userWithoutPassword,
       access_token: token,

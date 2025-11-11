@@ -7,12 +7,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { PaginatedResponse } from '../common/interfaces/paginated-response.interface';
 import { createPaginationMeta } from '../common/utils/pagination.utils';
+import { UserPreferenceDto } from './dto/user-preference.dto';
+import { LoggingService } from '../common/services/logging.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly loggingService: LoggingService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -61,5 +64,30 @@ export class UsersService {
     if (result.affected === 0) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+  }
+  async updatePreferences(
+    userId: string,
+    preferencesDto: UserPreferenceDto,
+  ): Promise<User> {
+    const user = await this.findOne(userId);
+
+    // Store previous preferences for logging
+    const previousPreferences = { ...user.preferences };
+
+    // Update preferences
+    user.preferences = preferencesDto;
+    const updatedUser = await this.usersRepository.save(user);
+
+    // Log preference update
+    this.loggingService.logWithCorrelation('user_preferences_updated', {
+      event: 'preference_update',
+      user_id: userId,
+      status_change: {
+        from: previousPreferences,
+        to: preferencesDto,
+      },
+    });
+
+    return updatedUser;
   }
 }

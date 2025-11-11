@@ -6,9 +6,13 @@ import { AuthModule } from './auth/auth.module';
 import { HealthModule } from './health/health.module';
 import { CorrelationIdMiddleware } from './common/middleware/correlation-id.middleware';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { ClsModule } from 'nestjs-cls';
 
 @Module({
   imports: [
+    ClsModule.forRoot({
+      middleware: { mount: true, generateId: false },
+    }),
     ConfigModule.forRoot({
       isGlobal: true,
     }),
