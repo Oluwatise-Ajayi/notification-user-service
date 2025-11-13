@@ -8,6 +8,8 @@ import { CorrelationIdMiddleware } from './common/middleware/correlation-id.midd
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { ClsModule } from 'nestjs-cls';
 
+import { EtcdService } from './common/services/etcd.service';
+
 @Module({
   imports: [
     ClsModule.forRoot({
@@ -30,6 +32,7 @@ import { ClsModule } from 'nestjs-cls';
     AuthModule,
     HealthModule,
   ],
+  providers: [EtcdService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
